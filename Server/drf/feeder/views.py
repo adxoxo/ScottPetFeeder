@@ -3,7 +3,7 @@ from rest_framework.viewsets import ViewSet
 from rest_framework import status 
 from rest_framework.response import Response
 from .models import FeederStatus
-from .serializers import FeederStatusSerializer, FoodLevelSerializer, ManualModeSerializer
+from .serializers import FeederStatusSerializer, FoodLevelSerializer, ManualModeSerializer, DispenseSerializer
 
 # Create your views here.
 
@@ -36,6 +36,59 @@ class PetFeederView(ViewSet):
             return Response({'message': 'Food Level Updated Successfully'})
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class PetFeederMobileView(ViewSet):
+
+    def MobileFeederStatus(self, request):
+
+        mobilestatus, created = FeederStatus.objects.get_or_create()
+
+        serializer = FeederStatusSerializer(mobilestatus)
+
+        return Response(serializer.data, status=200)
+
+    def ManualModeSwitch(self, request):
+
+        serializer = ManualModeSerializer(data=request.data)
+
+        if serializer.is_valid():
+
+            switch, created = FeederStatus.objects.get_or_create()
+
+            switch.is_manual_mode = serializer.validated_data['is_manual_mode']
+
+            switch.save()
+
+            return Response({'message':'Manual Mode Updated Successfully'})
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class MobileButtonView(ViewSet):
+
+    def MobileDispense(self, request):
+
+        serializer = DispenseSerializer(data=request.data)
+
+        if serializer.is_valid():
+
+            mobilebutton, created = FeederStatus.objects.get_or_create()
+
+            mobilebutton.dispense = serializer.validated_data['dispense']
+
+            mobilebutton.save()
+
+            return Response({'message':'Pet Feeder dispensed'})
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+             
+
+
+
+
+
+
+
 
 
     

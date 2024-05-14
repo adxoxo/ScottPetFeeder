@@ -15,3 +15,8 @@ class ManualModeSerializer(serializers.ModelSerializer):
     class Meta:
         model = FeederStatus
         fields = ['is_manual_mode']
+
+class DispenseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FeederStatus
+        fields  = ['dispense']
