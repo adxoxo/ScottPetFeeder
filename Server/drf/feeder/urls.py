@@ -9,7 +9,7 @@ urlpatterns = [
     path('mobile/', PetFeederMobileView.as_view({
         'get':'MobileFeederStatus',
         'post':'ManualModeSwitch'
-    }))
+    })),
 
     path('mobilebutton/', MobileButtonView.as_view({
         'post':'MobileDispense' 
